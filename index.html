@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Знакомство с ИИ — путеводитель для сотрудников · ППК «Единый заказчик»</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+
+:root{
+  --ink:#1b2942; --muted:#586379; --line:#e3e8f0;
+  --navy:#16294a; --navy-2:#1f3c66;
+  --blue:#2b5fa6; --blue-d:#1e4279; --teal:#3a93ad;
+  --warn:#b4540e; --warn-bg:#fbf3ea; --warn-bd:#e9c79f;
+  --tip:#2b5fa6; --tip-bg:#eef3fa; --tip-bd:#ccddef;
+  --ok:#1f7a52; --ok-bg:#eef7f1; --ok-bd:#bfe0cd;
+  --danger:#a82a2a; --danger-bg:#fbf1f1; --danger-bd:#e8c9c9;
+  --bg:#f4f6fa; --card:#ffffff;
+  --shadow:0 6px 22px rgba(20,35,59,.06);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Manrope',-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:18px; line-height:1.7; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px; margin:0 auto; padding:0 22px}
+
+/* ---------- TOP BAR (фирменный блок) ---------- */
+.topbar{background:#fff; border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex; align-items:center; justify-content:space-between; gap:18px; padding:14px 22px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:14px}
+.brand .logo{height:56px; width:auto; display:block}
+.brand .bname{font-weight:800; font-size:15.5px; color:var(--navy); line-height:1.25}
+.brand .bname span{display:block; font-weight:600; font-size:12.5px; color:var(--muted); letter-spacing:.01em; margin-top:2px}
+.docmeta{text-align:right; font-size:12.5px; color:var(--muted); line-height:1.55}
+.docmeta b{display:block; color:var(--navy); font-weight:700; font-size:13px; letter-spacing:.02em}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative; overflow:hidden; color:#fff; text-align:center;
+  background:linear-gradient(135deg,#13284b 0%,#1d3a63 58%,#235871 100%);
+  padding:66px 22px 74px;
+}
+.hero::before,.hero::after{content:""; position:absolute; border-radius:50%; opacity:.07; background:#fff}
+.hero::before{width:320px;height:320px; top:-120px; right:-80px}
+.hero::after{width:220px;height:220px; bottom:-110px; left:-60px; opacity:.05}
+.hero .badge{
+  display:inline-flex; gap:8px; align-items:center; font-size:12.5px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22); padding:7px 15px; border-radius:8px;
+}
+.hero h1{
+  font-size:clamp(30px,5vw,46px); line-height:1.1; margin:22px auto 14px; max-width:760px;
+  font-weight:800; letter-spacing:-.01em;
+}
+.hero p.sub{font-size:clamp(16px,2.3vw,20px); max-width:640px; margin:0 auto; opacity:.92; font-weight:500}
+.hero .meta{margin-top:28px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
+.chip{display:inline-flex; align-items:center; gap:7px; background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.20); padding:8px 15px; border-radius:8px; font-size:14px; font-weight:600}
+.chip svg{width:16px;height:16px}
+
+/* ---------- NAV ---------- */
+nav.toc{
+  position:sticky; top:0; z-index:20; background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+nav.toc .wrap{display:flex; gap:4px; overflow-x:auto; padding:10px 22px}
+nav.toc a{
+  white-space:nowrap; font-size:14px; font-weight:600; color:var(--muted); text-decoration:none;
+  padding:7px 13px; border-radius:8px; transition:.15s;
+}
+nav.toc a:hover{color:var(--blue); background:var(--tip-bg)}
+
+/* ---------- SECTIONS ---------- */
+main{padding:50px 0 28px}
+section{margin-bottom:44px}
+.kicker{display:inline-block; font-size:12.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--blue); margin-bottom:10px}
+h2{font-size:clamp(23px,3.2vw,30px); line-height:1.2; margin:0 0 16px; font-weight:800; letter-spacing:-.01em; color:var(--navy)}
+h3{font-size:19px; font-weight:700; margin:26px 0 10px; color:var(--navy)}
+p{margin:0 0 16px}
+.lead{font-size:19.5px; color:var(--ink)}
+strong{font-weight:700}
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:28px 30px; box-shadow:var(--shadow)}
+
+/* numbered steps */
+.steps{list-style:none; counter-reset:s; padding:0; margin:6px 0 0}
+.steps li{counter-increment:s; position:relative; padding:4px 0 18px 56px; margin:0}
+.steps li::before{
+  content:counter(s); position:absolute; left:0; top:0; width:38px;height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; font-size:17px;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+}
+.steps li:not(:last-child)::after{content:""; position:absolute; left:18px; top:42px; bottom:6px; width:2px; background:var(--line)}
+
+/* feature list */
+.flist{list-style:none; padding:0; margin:0; display:grid; gap:12px}
+.flist li{display:flex; gap:13px; align-items:flex-start}
+.flist .dot{flex:0 0 auto; width:24px;height:24px; border-radius:7px; background:var(--tip-bg); color:var(--blue);
+  display:flex; align-items:center; justify-content:center; margin-top:3px}
+.flist .dot svg{width:14px;height:14px}
+
+/* outcomes */
+.outcomes{list-style:none; padding:0; margin:10px 0 0; display:grid; grid-template-columns:1fr 1fr; gap:12px 22px}
+.outcomes li{display:flex; gap:12px; align-items:flex-start; font-size:16.5px}
+.outcomes .ck{flex:0 0 auto; width:26px;height:26px; border-radius:50%; background:var(--ok-bg); color:var(--ok);
+  border:1px solid var(--ok-bd); display:flex; align-items:center; justify-content:center; margin-top:2px}
+.outcomes .ck svg{width:15px;height:15px}
+
+/* callouts */
+.call{display:flex; gap:15px; border-radius:14px; padding:18px 20px; margin:20px 0; border:1px solid}
+.call .ic{flex:0 0 auto; width:34px;height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center}
+.call .ic svg{width:20px;height:20px}
+.call .t{font-weight:800; display:block; margin-bottom:3px; font-size:15.5px; letter-spacing:.01em}
+.call p{margin:0 0 6px} .call p:last-child{margin:0}
+.call.tip{background:var(--tip-bg); border-color:var(--tip-bd)} .call.tip .ic{background:#dbe7f6; color:var(--blue)} .call.tip .t{color:var(--blue-d)}
+.call.warn{background:var(--warn-bg); border-color:var(--warn-bd)} .call.warn .ic{background:#f1ddc4; color:var(--warn)} .call.warn .t{color:#9a480c}
+.call.try{background:var(--ok-bg); border-color:var(--ok-bd)} .call.try .ic{background:#cfe9da; color:var(--ok)} .call.try .t{color:#176244}
+
+/* formula chips */
+.formula{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:8px}
+.fcell{background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:15px 17px}
+.fcell b{display:block; color:var(--blue); font-size:15px; margin-bottom:2px}
+.fcell span{font-size:15.5px; color:var(--muted)}
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0}
+.compare .bad,.compare .good{border-radius:12px; padding:16px 18px; font-size:16px}
+.compare .bad{background:var(--danger-bg); border:1px solid var(--danger-bd)}
+.compare .good{background:var(--ok-bg); border:1px solid var(--ok-bd)}
+.compare .lbl{font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px}
+.compare .bad .lbl{color:var(--danger)} .compare .good .lbl{color:var(--ok)}
+
+/* ---------- SAFETY (усиленный раздел) ---------- */
+.safety{background:var(--card); border:1px solid var(--line); border-top:5px solid var(--danger);
+  border-radius:var(--radius); padding:28px 30px; box-shadow:var(--shadow)}
+.safety .kicker{color:var(--danger)}
+.rules2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:6px 0 4px}
+.rulebox{border-radius:12px; padding:18px 18px 16px; border:1px solid}
+.rulebox.no{background:var(--danger-bg); border-color:var(--danger-bd)}
+.rulebox.yes{background:var(--ok-bg); border-color:var(--ok-bd)}
+.rulebox .h{display:flex; align-items:center; gap:9px; font-weight:800; font-size:15.5px; margin-bottom:10px}
+.rulebox.no .h{color:var(--danger)} .rulebox.yes .h{color:var(--ok)}
+.rulebox .h svg{width:19px;height:19px}
+.rulebox ul{list-style:none; padding:0; margin:0; display:grid; gap:9px}
+.rulebox li{display:flex; gap:9px; align-items:flex-start; font-size:15.5px; line-height:1.5}
+.rulebox li::before{flex:0 0 auto; margin-top:.55em; width:6px; height:6px; border-radius:50%; content:""}
+.rulebox.no li::before{background:var(--danger)}
+.rulebox.yes li::before{background:var(--ok)}
+
+/* cheat sheet */
+.sheet{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+.scard{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:0 3px 12px rgba(20,35,59,.04)}
+.scard h4{margin:0 0 8px; font-size:14.5px; color:var(--blue); font-weight:800; display:flex; align-items:center; gap:8px}
+.scard .q{font-family:'Source Serif 4',Georgia,serif; font-size:16px; color:#2a3950; line-height:1.55}
+
+/* glossary */
+.gloss{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.gitem{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px}
+.gitem b{color:var(--ink)} .gitem span{color:var(--muted); font-size:15.5px}
+
+/* final */
+.final{background:linear-gradient(135deg,#13284b,#1f3c66); color:#fff; border-radius:18px; padding:38px 34px; text-align:center}
+.final h2{color:#fff} .final p{color:rgba(255,255,255,.9); max-width:660px; margin:0 auto 8px}
+
+footer{text-align:center; color:var(--muted); font-size:13.5px; padding:30px 22px 48px; line-height:1.6}
+footer b{color:var(--navy); font-weight:700}
+
+@media(max-width:680px){
+  .formula,.sheet,.gloss,.compare,.rules2,.outcomes{grid-template-columns:1fr}
+  body{font-size:17px}
+  .docmeta{text-align:left}
+}
+@media print{
+  nav.toc{display:none} body{background:#fff; font-size:11.5pt; color:#000}
+  .card,.scard,.gitem,.safety{box-shadow:none}
+  section{break-inside:avoid} .call,.rulebox,.scard{break-inside:avoid}
+  .hero{background:#fff !important; color:var(--navy); padding:30px 22px; border-bottom:2px solid var(--line)}
+  .hero::before,.hero::after{display:none}
+  .hero .badge,.hero .chip{background:#fff; border-color:var(--line); color:var(--navy)}
+  .hero p.sub{opacity:1}
+  .final{background:#fff !important; color:var(--ink); border:1px solid var(--line)}
+  .final h2,.final p{color:var(--ink)}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= ФИРМЕННЫЙ ВЕРХНИЙ БЛОК ================= -->
+<!-- Логотип ППК «Единый заказчик»: встроен как изображение (data:base64),
+     поэтому файл самодостаточен. Исходный файл также лежит в папке
+     «Изображения/edinyi-zakazchik-logo.png» — при желании можно заменить на
+     <img src="../Изображения/edinyi-zakazchik-logo.png" class="logo" alt="ППК «Единый заказчик»">. -->
+<div class="topbar"><div class="wrap">
+  <div class="brand">
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANcAAACWCAYAAABNeR18AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDYuMC1jMDAyIDc5LjE2NDM1MiwgMjAyMC8wMS8zMC0xNTo1MDozOCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjEgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjBCQTU5REM1REYwRjExRUZBRDkzQzUxNDA0NzE2NDFDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjBCQTU5REM2REYwRjExRUZBRDkzQzUxNDA0NzE2NDFDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MEJBNTlEQzNERjBGMTFFRkFEOTNDNTE0MDQ3MTY0MUMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MEJBNTlEQzRERjBGMTFFRkFEOTNDNTE0MDQ3MTY0MUMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4z2nQEAABdyElEQVR42uxdB4Bc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" alt="ППК «Единый заказчик»" width="215" height="150">
+    <div class="bname">ППК «Единый заказчик»<span>Рабочая группа по внедрению ИИ</span></div>
+  </div>
+  <div class="docmeta">
+    <b>Внутренний обучающий материал</b>
+    Версия 1.0 · 2026
+  </div>
+</div></div>
+
+<header class="hero">
+  <span class="badge">Внутренний обучающий материал</span>
+  <h1>Знакомство с искусственным интеллектом</h1>
+  <p class="sub">Практический путеводитель для тех, кто начинает работу с ИИ с нуля. Предварительная подготовка не требуется.</p>
+  <div class="meta">
+    <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>15–20 минут в день</span>
+    <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5l8 4 8-4v14l-8-4-8 4z"/></svg>6 коротких глав</span>
+    <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>С практикой по ходу</span>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#start">Начало</a>
+  <a href="#goals">Результаты</a>
+  <a href="#ch1">Что такое ИИ</a>
+  <a href="#ch2">Знакомство с Qwen</a>
+  <a href="#ch3">Как писать запросы</a>
+  <a href="#ch4">Что поручать</a>
+  <a href="#ch5">Безопасность</a>
+  <a href="#ch6">Привычка</a>
+  <a href="#sheet">Шпаргалка</a>
+  <a href="#gloss">Словарик</a>
+</div></nav>
+
+<main class="wrap">
+
+  <section id="start">
+    <div class="card">
+      <span class="kicker">Прежде чем начать</span>
+      <h2>Несколько слов для тех, кто только начинает</h2>
+      <p class="lead">Если вы пока не уверены в своих знаниях об искусственном интеллекте — это естественно. Материал составлен именно для такой ситуации: без сложных терминов, без формул и без необходимости что-либо устанавливать.</p>
+      <p>Основная мысль на старте простая: <strong>ИИ — это рабочий инструмент, а не проверка ваших знаний и не замена специалиста.</strong> Он помогает с рутинными задачами и освобождает время для работы, которая действительно требует участия человека. Освоить его по силам каждому сотруднику.</p>
+      <div class="call tip">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0012 2z"/></svg></div>
+        <div>
+          <span class="t">Как работать с этим путеводителем</span>
+          <p>Двигайтесь по порядку — каждая глава опирается на предыдущую. Достаточно 15–20 минут в день. Там, где встретится блок <strong>«Попробуйте сами»</strong>, откройте ИИ-сервис и повторите шаг на практике: именно практика закрепляет навык, чтение без неё забывается быстро.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="goals">
+    <div class="card">
+      <span class="kicker">Ориентир</span>
+      <h2>После изучения материала сотрудник сможет</h2>
+      <p>К концу путеводителя у вас сложится набор базовых навыков, которые сразу применимы в работе:</p>
+      <ul class="outcomes">
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>открыть Qwen и начать диалог — без VPN и установки программ;</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>сформулировать понятный рабочий запрос по простой формуле;</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>получить краткую выжимку из документа или протокола;</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>подготовить черновик делового письма или ответа;</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>обезличить данные перед загрузкой в открытый сервис;</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>проверить факты, цифры и ссылки перед использованием в работе;</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>сохранять удачные промпты для повторного применения.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="ch1">
+    <span class="kicker">Глава 1</span>
+    <h2>Что такое ИИ — простыми словами</h2>
+    <p>Представьте очень начитанного помощника, который изучил огромное количество текстов и научился на их основе продолжать мысль и отвечать человеческим языком. Примерно так и работает ИИ-чат: вы пишете словами — он отвечает словами.</p>
+    <p>Технически он не «думает» и не «знает» в человеческом смысле. Он <strong>предсказывает наиболее подходящее продолжение</strong> вашего текста на основе того, что встречал при обучении. Несмотря на простоту принципа, это позволяет ему составлять письма, делать выжимки, объяснять сложное и предлагать варианты решений.</p>
+    <h3>Что важно понять сразу</h3>
+    <ul class="flist">
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Это инструмент, а не источник истины.</strong> Он часто полезен, но иногда ошибается — поэтому важные данные мы проверяем.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Понимает обычный язык.</strong> Команды знать не нужно — формулируйте так, как объяснили бы коллеге.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Помнит ваш разговор.</strong> Ответ можно уточнять прямо в диалоге, не начиная заново.</div></li>
+    </ul>
+    <div class="call tip">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0012 2z"/></svg></div>
+      <div>
+        <span class="t">Два распространённых заблуждения</span>
+        <p><strong>«ИИ всё знает и всегда прав».</strong> Это не так: он может уверенно ошибиться, особенно в точных фактах, цифрах и датах.</p>
+        <p><strong>«ИИ — это слишком сложно».</strong> Тоже нет: базовые навыки осваиваются за несколько часов практики на реальных задачах.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ch2">
+    <span class="kicker">Глава 2</span>
+    <h2>Знакомимся с Qwen — рабочим помощником</h2>
+    <p>В компании в качестве основного ИИ-помощника выбран <strong>Qwen</strong> (читается «квен») — бесплатный сервис от компании Alibaba. Выбор обоснован: он бесплатный, хорошо работает с текстами и деловыми задачами и — что важно для нас — <strong>открывается из России напрямую, без VPN.</strong></p>
+    <ul class="flist">
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Бесплатно</strong> — без подписки и без жёстких ограничений на число запросов.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Без VPN</strong> — открывается в рабочем или личном браузере как обычный сайт.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div>Работает не только с текстом: понимает <strong>документы и изображения</strong>, ищет в интернете, помогает с таблицами.</div></li>
+    </ul>
+    <h3>Как зайти — пошагово</h3>
+    <ol class="steps">
+      <li>Откройте в браузере сайт <strong>chat.qwen.ai</strong> — подойдёт любой браузер на компьютере или телефоне.</li>
+      <li>Войдите через электронную почту, телефон или аккаунт Alibaba. Для первого знакомства часто доступен гостевой вход — чтобы просто попробовать.</li>
+      <li>Откроется простое окно: внизу — поле ввода, по центру — область ответов. Всё общение происходит здесь.</li>
+      <li>Вверху есть переключатель моделей. По умолчанию выбран универсальный вариант — для начала менять его не нужно.</li>
+    </ol>
+    <div class="call warn">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+      <div>
+        <span class="t">Особенность работы с русским языком</span>
+        <p>Qwen — сервис из Китая. С деловым текстом на русском он справляется хорошо, но иногда допускает неточности в формулировках, а <strong>в изображениях надписи на русском часто получаются с ошибками.</strong> Поэтому текст всегда перечитывайте, а для готовых изображений с русскими надписями сервис подходит хуже.</p>
+      </div>
+    </div>
+    <div class="call try">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+      <div>
+        <span class="t">Попробуйте сами · 5 минут</span>
+        <p>Зайдите в Qwen и напишите: «Здравствуйте. Объясните простыми словами, чем вы можете помочь сотруднику в офисной работе». Прочитайте ответ — это и есть ваш первый диалог с ИИ.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ch3">
+    <span class="kicker">Глава 3</span>
+    <h2>Как формулировать запросы: запрос — это поручение</h2>
+    <p>Запрос к ИИ называют <strong>промптом</strong>. Это слово обозначает обычное поручение, сформулированное словами. Главный принцип всего обучения: <strong>качество ответа напрямую зависит от качества поручения.</strong></p>
+    <h3>Простая формула хорошего запроса</h3>
+    <div class="formula">
+      <div class="fcell"><b>Роль</b><span>кем «выступит» ИИ: «Ты юрист…», «Ты редактор…»</span></div>
+      <div class="fcell"><b>Задача</b><span>что сделать: «проверь договор», «сократи текст»</span></div>
+      <div class="fcell"><b>Контекст</b><span>детали и сам материал: «вот текст…», «аудитория — новые сотрудники»</span></div>
+      <div class="fcell"><b>Формат</b><span>каким быть ответу: «списком», «таблицей», «5 пунктов»</span></div>
+    </div>
+    <div class="compare">
+      <div class="bad"><div class="lbl">Слабый запрос</div>«Напиши про совещания».</div>
+      <div class="good"><div class="lbl">Сильный запрос</div>«Ты редактор. Составь короткую памятку о пользе еженедельных планёрок для новых сотрудников, простым языком, 5 пунктов списком, без лишних слов».</div>
+    </div>
+    <p>Второй ответ окажется заметно полезнее — хотя вы лишь добавили роль, детали и формат.</p>
+    <h3>Диалог, а не один запрос</h3>
+    <p>Первый ответ редко бывает окончательным, и это нормальный режим работы. ИИ помнит разговор, поэтому результат можно дорабатывать прямо в диалоге: «сделай короче», «добавь пример», «оформи таблицей». Хороший результат обычно складывается за 2–3 уточнения.</p>
+    <div class="call try">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+      <div>
+        <span class="t">Попробуйте сами</span>
+        <p>Попросите: «Составь план рабочей недели из 5 пунктов для офисного сотрудника». Затем уточните: «Сделай короче и добавь по одному совету к каждому пункту». Обратите внимание, как ответ подстраивается под уточнение.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ch4">
+    <span class="kicker">Глава 4</span>
+    <h2>Что можно поручить ИИ в работе</h2>
+    <p>Начните с задач, которые вы и так выполняете регулярно. Ниже — примеры, близкие к деятельности компании, с которыми Qwen справляется уже сейчас:</p>
+    <ul class="flist">
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Краткая справка по объекту</strong> — собрать ключевые сведения из нескольких документов в одну короткую справку.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Выжимка из протокола совещания</strong> — выделить принятые решения, поручения и сроки.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Проект делового письма или ответа</strong> — подготовить черновик письма, ответа на обращение или сопроводительного письма.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Анализ поручений</strong> — разобрать перечень поручений: кто ответственный, что сделать, к какому сроку.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Сравнение двух редакций документа</strong> — найти и перечислить отличия между версиями.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Тезисы для руководителя</strong> — сжать объёмный материал до нескольких ключевых тезисов.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Структурирование замечаний</strong> — собрать разрозненные замечания в упорядоченный перечень.</div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span><div><strong>Повестка совещания</strong> — составить проект повестки по теме и приложенным материалам.</div></li>
+    </ul>
+    <div class="call try">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+      <div>
+        <span class="t">Попробуйте сами</span>
+        <p>Возьмите нейтральный рабочий текст <strong>без конфиденциальных данных</strong> (см. главу 5), вставьте в Qwen и попросите: «Сделай краткую выжимку: о чём этот текст, какие решения и поручения в нём есть». Сравните результат с тем, как вы делали это вручную.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ch5">
+    <div class="safety">
+      <span class="kicker">Глава 5 · Обязательно к соблюдению</span>
+      <h2>Обязательные правила безопасного использования ИИ</h2>
+      <p>Пользоваться ИИ несложно, но есть правила, которые обязательны для всех сотрудников. Они короткие и важнее всего остального в этом материале.</p>
+
+      <h3>Правило 1. Что можно и что нельзя загружать в открытые ИИ-сервисы</h3>
+      <p>Когда вы отправляете запрос в облачный ИИ-сервис, текст уходит за пределы компании на внешние серверы. Поэтому сведения нужно разделять на допустимые и недопустимые для загрузки.</p>
+      <div class="rules2">
+        <div class="rulebox no">
+          <div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 8l8 8"/></svg>Нельзя загружать</div>
+          <ul>
+            <li>персональные данные (ФИО в связке с телефонами, паспортными данными, адресами);</li>
+            <li>документы с пометкой ДСП, сведения, составляющие служебную или коммерческую тайну;</li>
+            <li>реальные договоры, реквизиты, сметы и расчёты по конкретным объектам;</li>
+            <li>внутренние непубличные сведения о проектах, контрагентах и решениях.</li>
+          </ul>
+        </div>
+        <div class="rulebox yes">
+          <div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Можно загружать</div>
+          <ul>
+            <li>обезличенные тексты и черновики без реальных имён и реквизитов;</li>
+            <li>обобщённые формулировки задач и типовые шаблоны;</li>
+            <li>публичную информацию — опубликованные НПА и открытые материалы;</li>
+            <li>учебные и тестовые примеры без чувствительных данных.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="call warn">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+        <div>
+          <span class="t">Главный приём — обезличивание</span>
+          <p>Запрет не означает «нельзя пользоваться». Это означает — <strong>обезличивайте данные.</strong> Уберите имена, номера и названия, замените их на «Контрагент А», «Объект №1», «Сумма Х» — и работайте с обобщённой задачей. Для большинства задач этого достаточно.</p>
+        </div>
+      </div>
+
+      <h3>Правило 2. Ответственность за результат несёт сотрудник</h3>
+      <p>У ИИ есть особенность — <strong>галлюцинация</strong>: он может выдать убедительный, но <strong>неверный</strong> ответ — придумать факт, цифру, цитату или ссылку на несуществующий документ. Это не сбой, а свойство технологии: ИИ предсказывает правдоподобное продолжение, а не сверяется с истиной.</p>
+      <div class="call warn">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></div>
+        <div>
+          <span class="t">Ключевое правило</span>
+          <p><strong>Ответственность за итоговый результат несёт сотрудник, а не ИИ.</strong> Всё, что идёт в работу, в документ или в основу решения, проверяйте по первоисточнику. В обязательном порядке проверяйте <strong>факты, цифры, даты, ссылки на нормативные документы и расчёты.</strong></p>
+        </div>
+      </div>
+      <p>При этом соблюдайте меру: для черновиков, идей и формулировок достаточно обычного внимания. Жёсткой проверки требуют именно факты и сведения, на основе которых принимаются решения. Полезный приём — попросить ИИ «укажи источник» и «если не уверен — сообщи об этом», а затем сверить данные самостоятельно.</p>
+    </div>
+  </section>
+
+  <section id="ch6">
+    <span class="kicker">Глава 6</span>
+    <h2>Как сделать ИИ рабочей привычкой</h2>
+    <p>Навык без регулярного применения быстро угасает. Не стоит пытаться «перевести на ИИ всё и сразу» — эффективнее небольшой, но регулярный шаг:</p>
+    <ol class="steps">
+      <li>Выберите <strong>одну</strong> частую задачу, на которую уходит много времени (письма, выжимки, черновики справок).</li>
+      <li>В течение недели выполняйте её через Qwen — даже если поначалу медленнее. После нескольких повторов скорость возрастёт.</li>
+      <li>Сохраняйте удачные запросы в отдельную заметку — это ваша личная коллекция рабочих поручений.</li>
+      <li>Когда задача войдёт в привычку, добавьте следующую. И так шаг за шагом.</li>
+    </ol>
+    <div class="call tip">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 5a5.5 5.5 0 019.5 7c-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+      <div>
+        <span class="t">Если что-то не получается</span>
+        <p>Сложности на старте — обычная часть освоения нового инструмента. Уточняйте запрос у ИИ и при необходимости обращайтесь к наставнику-амбассадору проекта — это часть его задачи. Самый надёжный способ освоить ИИ — пробовать на реальных рабочих задачах и не стесняться вопросов.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sheet">
+    <span class="kicker">Приложение</span>
+    <h2>Шпаргалка: готовые промпты для рабочих задач</h2>
+    <p>Скопируйте, подставьте свои данные (предварительно обезличенные) — и пользуйтесь. Это рабочие заготовки, а не жёсткие правила: меняйте их под себя.</p>
+    <div class="sheet">
+      <div class="scard"><h4>Краткая справка по объекту</h4><div class="q">«На основе приложенных материалов составь краткую справку: назначение, ключевые параметры, текущий статус. 7–9 пунктов, деловой стиль» (данные обезличьте).</div></div>
+      <div class="scard"><h4>Выжимка из протокола</h4><div class="q">«Сделай выжимку из протокола: отдельно перечисли принятые решения, поручения с ответственными и сроки. Оформи списком».</div></div>
+      <div class="scard"><h4>Деловое письмо / ответ</h4><div class="q">«Помоги составить деловое письмо: тема …, адресат …, тон вежливый и официальный. Дай готовый к отправке вариант».</div></div>
+      <div class="scard"><h4>Анализ поручений</h4><div class="q">«Разбери этот перечень поручений и оформи таблицей: поручение, ответственный, срок, статус (если указан)».</div></div>
+      <div class="scard"><h4>Сравнение редакций</h4><div class="q">«Сравни две редакции документа и перечисли отличия: что добавлено, что удалено, что изменено по смыслу».</div></div>
+      <div class="scard"><h4>Тезисы для руководителя</h4><div class="q">«Сократи этот материал до 5–7 ключевых тезисов для доклада руководителю. Кратко, по существу, без второстепенных деталей».</div></div>
+      <div class="scard"><h4>Структурирование замечаний</h4><div class="q">«Собери эти замечания в упорядоченный перечень, сгруппируй по темам и убери повторы. Сохрани суть каждого».</div></div>
+      <div class="scard"><h4>Повестка совещания</h4><div class="q">«Составь проект повестки совещания по теме … на основе приложенных материалов. Укажи вопросы и ориентировочный тайминг».</div></div>
+    </div>
+  </section>
+
+  <section id="gloss">
+    <span class="kicker">Словарик</span>
+    <h2>Шесть слов, которых достаточно для начала</h2>
+    <div class="gloss">
+      <div class="gitem"><b>Нейросеть / ИИ-модель</b> — <span>программа, обученная на большом объёме текстов; основа таких помощников, как Qwen.</span></div>
+      <div class="gitem"><b>Промпт</b> — <span>ваш запрос-поручение к ИИ, сформулированный обычными словами.</span></div>
+      <div class="gitem"><b>Чат / диалог</b> — <span>окно общения с ИИ; он помнит предыдущие сообщения и позволяет уточнять ответ.</span></div>
+      <div class="gitem"><b>Контекст</b> — <span>объём разговора и данных, который ИИ удерживает в рамках одного диалога.</span></div>
+      <div class="gitem"><b>Галлюцинация</b> — <span>ситуация, когда ИИ уверенно выдаёт неверную информацию. Поэтому факты проверяются.</span></div>
+      <div class="gitem"><b>Мультимодальность</b> — <span>умение работать не только с текстом, но и с изображениями и файлами, а со временем — со звуком.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="final">
+      <h2>Что дальше</h2>
+      <p>Если вы прочитали материал и хотя бы раз попробовали инструмент на практике — вы уже освоили базовые навыки работы с ИИ. Дальше будет проще: чем больше практики на реальных задачах, тем естественнее ИИ войдёт в повседневную работу.</p>
+      <p>Этот путеводитель — только вводный этап. На его основе компания готовит полноценный обучающий курс с примерами, видеоматериалами и практикой под рабочие задачи. А пока — пробуйте, сохраняйте удачные запросы и обращайтесь к наставнику-амбассадору. Регулярная практика закрепит эти навыки.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <b>ППК «Единый заказчик»</b> · Проект внедрения искусственного интеллекта<br>
+  Подготовлено Рабочей группой по внедрению ИИ<br>
+  Внутренний обучающий материал для самостоятельного изучения · Версия 1.0 · 2026
+</footer>
+
+</body>
+</html>
